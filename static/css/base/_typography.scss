@@ -1,0 +1,64 @@
+@use "../abstracts" as *;
+
+/*--------------------------------------------------------------
+  Typography
+--------------------------------------------------------------*/
+// line-height: normal;  ->  1.2
+
+%heading {
+  // @include BrandonGrotesque('medium');
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+.h1 {
+  @extend %heading;
+  // default font-size: 2em (32px)
+}
+
+h2,
+.h2 {
+  @extend %heading;
+  // default font-size: 1.5em (24px)
+}
+
+h3,
+.h3 {
+  @extend %heading;
+  // default font-size: 1.17em (18.72px)
+}
+
+h4,
+.h4 {
+  @extend %heading;
+  // default font-size: 1em (16px)
+}
+
+h5,
+.h5 {
+  @extend %heading;
+  // default font-size: .83em (13.28px)
+}
+
+h6,
+.h6 {
+  @extend %heading;
+  // default font-size: .67em (10.72em)
+}
+
+// a {
+//   // color: $black;
+// }
+
+/*--------------------------------------------------------------
+  Media Queries
+--------------------------------------------------------------*/
+
+/* Mobile
+================================================== */
+// @include media(small) {}
+
+/* Medium
+================================================== */
+// @include media(medium) {}
