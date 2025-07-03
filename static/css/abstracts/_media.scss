@@ -1,0 +1,26 @@
+/*--------------------------------------------------------------
+  Breakpoints
+--------------------------------------------------------------*/
+$breakpoints: (
+  'x-small': 0,
+  'small': 320,
+  'medium': 768,
+  'large': 1280,
+  'x-large': 1920,
+);
+
+@mixin media($key) {
+
+  $size: map-get($breakpoints, $key);
+
+  @if ($size) {
+    @media only screen and (min-width: #{$size}px) {
+      @content;
+    }
+  }
+
+  @else {
+    @error '`#{$key}` does not exist in the $breakpoints';
+  }
+
+}

@@ -1,0 +1,77 @@
+@use "../abstracts" as *;
+
+/*--------------------------------------------------------------
+  Reset
+--------------------------------------------------------------*/
+* {
+  box-sizing: border-box;
+}
+
+%body {
+  // background: $charcoal;
+  // color: $black;
+  font: 400 1rem sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  @extend %body;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol,
+li {
+  margin: 0;
+  // padding: 0;
+}
+
+ol,
+ul {
+  padding: 0 0 0 2rem;
+
+  li {
+    // margin: calc($pad / 6) 0 0;
+  }
+
+  &.circumflex {
+    list-style: "\02c6\0020\00a0"; // \2002
+  }
+
+  &.asterisk {
+    list-style: "\0002a\0020\00a0"; // \2002
+  }
+}
+
+a {
+  // color: $primary-blue;
+  text-decoration: none;
+}
+
+img,
+video {
+  display: block;
+  width: 100%;
+}
+
+figure {
+  margin: 0;
+}
+
+.visuallyHidden {
+  // https://www.w3.org/WAI/tutorials/forms/labels/
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
