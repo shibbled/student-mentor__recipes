@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+<!-- Title in Head -->
+{% block title %}Admin Panel{% endblock %}
+
+<!-- Content -->
+{% block content %}
+
+<h1>Login</h1>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="error">
+      {% for message in messages %}
+          {{ message }}<br>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  <form method="POST">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="submit" value="Login">
+  </form>
+
+{% endblock %}

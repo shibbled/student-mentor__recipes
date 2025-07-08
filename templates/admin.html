@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+<!-- Title in Head -->
+{% block title %}Admin Panel{% endblock %}
+
+<!-- Content -->
+{% block content %}
+
+<h1>Admin Panel</h1>
+<p>Welcome, {{ session.username }}</p>
+<a href="{{ url_for('logout') }}">Logout</a>
+
+{% endblock %}

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, url_for, flash
+from werkzeug.security import check_password_hash
 import os
 import psycopg2
 from dotenv import load_dotenv
@@ -9,6 +10,7 @@ load_dotenv()
 
 # Flask App
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
 
 # Connect to PostgreSQL
 conn = psycopg2.connect(os.getenv("DATABASE_URL"))
@@ -21,7 +23,10 @@ cloudinary.config(
     api_secret=os.getenv("CLOUDINARY_API_SECRET")
 )
 
-# Home page
+
+# ==============================
+# HOME PAGE
+# ==============================
 @app.route('/')
 def index():
   buttons = [
@@ -40,28 +45,52 @@ def index():
   ]
   return render_template('index.html', buttons=buttons, categories=categories)
 
-# Upload handler
-@app.route("/upload", methods=["POST"])
-def upload_recipe():
-    title = request.form["title"]
-    author = request.form["author"]
-    ingredients = request.form["ingredients"]
-    instructions = request.form["instructions"]
-    categories = request.form["categories"]
-    file = request.files["image"]
 
-    # Upload to Cloudinary
-    result = cloudinary.uploader.upload(file)
-    image_url = result["secure_url"]
+# ==============================
+# HANDLER : LOGIN
+# ==============================
+@app.route("/login", methods=["GET", "POST"])
+def login():
+  if request.method == "POST":
+    username = request.form["username"].strip()
+    password = request.form["password"]
 
-    # Store in PostgreSQL
-    cur.execute(
-        "INSERT INTO recipes (title, author, ingredients, instructions, categories, image_url) VALUES (%s, %s, %s, %s, %s, %s)",
-        (title, author, ingredients, instructions, categories, image_url)
-    )
-    conn.commit()
+    cur.execute("SELECT id, password_hash FROM users WHERE username = %s", (username,))
+    user = cur.fetchone()
 
-    return redirect("/")
+    if user is not None and check_password_hash(user[1], password):
+      session["logged_in"] = True
+      session["user_id"] = user[0]
+      session["username"] = username
+      return redirect(url_for("admin_panel"))
+    else:
+      flash("Incorrect username or password")
+
+  return render_template("login.html")
+
+
+# ==============================
+# LOGOUT
+# ==============================
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
+
+
+# ==============================
+# ADMIN
+# ==============================
+@app.route("/admin")
+def admin_panel():
+  if not session.get("logged_in"):
+    return redirect(url_for("login"))
+
+  user_id = session["user_id"]
+  cur.execute("SELECT id, title, author, ingredients, instructions, categories, image_url FROM recipes WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
+  recipes = cur.fetchall()
+
+  return render_template("admin.html", recipes=recipes)
 
 
 if __name__ ==  "__main__":
