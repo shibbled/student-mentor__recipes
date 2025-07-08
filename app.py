@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from werkzeug.security import check_password_hash
-import os
 import psycopg2
+import os
 from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
@@ -12,9 +12,14 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
+# Check database config
+db_url = os.getenv("DATABASE_URL")
+if not db_url:
+  print("⚠️ DATABASE_URL is not set!")
+
 # Connect to PostgreSQL
-conn = psycopg2.connect(os.getenv("DATABASE_URL"))
-cur = conn.cursor()
+def get_db_connection():
+  return psycopg2.connect(db_url)
 
 # Configure Cloudinary
 cloudinary.config(
@@ -55,6 +60,9 @@ def login():
     username = request.form["username"].strip()
     password = request.form["password"]
 
+    conn = get_db_connection()
+    cur = conn.cursor()
+
     cur.execute("SELECT id, password_hash FROM users WHERE username = %s", (username,))
     user = cur.fetchone()
 
@@ -85,6 +93,9 @@ def logout():
 def admin_panel():
   if not session.get("logged_in"):
     return redirect(url_for("login"))
+  
+  conn = get_db_connection()
+  cur = conn.cursor()
 
   user_id = session["user_id"]
   cur.execute("SELECT id, title, author, ingredients, instructions, categories, image_url FROM recipes WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
