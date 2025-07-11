@@ -7,7 +7,10 @@
 {% block content %}
 
 <h1>Admin Panel</h1>
-<p>Welcome, {{ session.username }}</p>
-<a href="{{ url_for('logout') }}">Logout</a>
+<p>Hi, {{ session.forename }}</p> <a href="{{ url_for('logout') }}">Logout</a>
+
+<!-- Create a recipe -->
+
+<!-- Edit a recipe -->
 
 {% endblock %}
