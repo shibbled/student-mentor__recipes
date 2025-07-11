@@ -9,22 +9,16 @@
 
   <!-- Header -->
 	<header>
-		<nav>
-			{% for button in buttons %}
-				<a href="{{ button.url }}">{{ button.title }}</a>
-			{% endfor %}
-    </nav>
-
-    <label for="site-search">Search the site:</label>
-    <input type="search" id="site-search" name="q" />
+    {% include 'partials/nav.html' %}
+    {% if not hide_search %}
+      {% include 'partials/search.html' %}
+    {% endif %}
   </header>
 
   <!-- Content -->
   {% block content %}{% endblock %}
 
   <!-- Footer -->
-  <footer>
-    I am the footer
-  </footer>
+  {% include 'partials/footer.html' %}
 </body>
 </html>

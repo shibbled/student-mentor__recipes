@@ -74,7 +74,7 @@ def login():
     else:
       flash("Incorrect username or password")
 
-  return render_template("login.html")
+  return render_template("pages/admin/login.html", hide_search=True)
 
 
 # ==============================
@@ -101,7 +101,7 @@ def admin_panel():
   cur.execute("SELECT id, title, author, ingredients, instructions, categories, image_url FROM recipes WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
   recipes = cur.fetchall()
 
-  return render_template("admin.html", recipes=recipes)
+  return render_template("pages/admin/dashboard.html", recipes=recipes)
 
 
 if __name__ ==  "__main__":
