@@ -8,16 +8,8 @@ def create_app():
   app = Flask(__name__)
   app.secret_key = os.getenv("SECRET_KEY", "default-key")
 
-  from .db import get_db_connection
-  app.db_connection = get_db_connection
-
   # Register Routes
-  from .routes.index import index_bp
-  from .routes.auth import auth_bp
-  from .routes.recipe import recipe_bp
-    
-  app.register_blueprint(index_bp)
-  app.register_blueprint(auth_bp)
-  app.register_blueprint(recipe_bp)
+  from app.routes import register_blueprints
+  register_blueprints(app)
 
   return app

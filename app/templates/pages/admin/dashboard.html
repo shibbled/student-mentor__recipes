@@ -10,7 +10,17 @@
 <p>Hi, {{ session.forename }}</p> <a href="{{ url_for('auth.logout') }}">Logout</a>
 
 <!-- Create a recipe -->
+ <button>Create a new recipe</button>
 
 <!-- Edit a recipe -->
+{% if recipes %}
+  <ul>
+    {% for recipe in recipes %}
+      <li>{{ recipe[1] }} (ID: {{ recipe[0] }})</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You haven't added any recipes yet.</p>
+{% endif %}
 
 {% endblock %}
