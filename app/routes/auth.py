@@ -26,9 +26,9 @@ def login():
         else:
             flash("Incorrect username or password")
 
-    return render_template("login.html")
+    return render_template("pages/admin/login.html")
 
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("index.index"))

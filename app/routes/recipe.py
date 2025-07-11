@@ -13,4 +13,4 @@ def admin_panel():
     cur.execute("SELECT title FROM recipes WHERE user_id = %s", (session["user_id"],))
     recipes = cur.fetchall()
     conn.close()
-    return render_template("admin_panel.html", recipes=recipes)
+    return render_template("pages/admin/dashboard.html", recipes=recipes)
